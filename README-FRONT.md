@@ -84,10 +84,8 @@ function Game() {
 |---|---|
 | `board` | La grille du jeu. Chaque case = une couleur de pièce, ou `null` si vide. |
 | `active` | La pièce qui tombe. `active.cells` = les cases à colorier. |
-| `ghost` | L'ombre qui montre où la pièce va atterrir. |
-| `hold` | La pièce mise de côté. |
 | `queue` | Les prochaines pièces (le « NEXT »). |
-| `status` | `idle` (accueil), `running` (en jeu), `paused`, `gameover`. |
+| `status` | `idle` (accueil), `running`, `paused`, `gameover`. |
 | `score` / `level` / `lines` | Pour afficher les compteurs. |
 
 ⚠️ On ne **modifie jamais** `state` à la main. On passe toujours par `actions`.
@@ -104,8 +102,7 @@ function Game() {
 | `moveLeft()` / `moveRight()` | Déplace la pièce à gauche / droite. |
 | `softDrop()` | Fait descendre la pièce un peu plus vite. |
 | `hardDrop()` | Fait tomber la pièce d'un coup, tout en bas. |
-| `rotateCW()` / `rotateCCW()` | Tourne la pièce (horaire / anti-horaire). |
-| `hold()` | Met la pièce de côté pour plus tard. |
+| `rotateCW()` | Tourne la pièce dans le sens horaire. |
 
 ---
 
