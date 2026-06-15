@@ -1,4 +1,4 @@
-# 🎮 Tetris Engine
+# 🎮 Catris Engine
 
 C'est le **cerveau du jeu** : il gère toutes les règles (déplacements, chute, lignes, score…).
 Il **n'affiche rien**. Votre travail côté front : **afficher** ce qu'il calcule et **brancher
@@ -24,10 +24,10 @@ npm install github:Cig4l/Catris-Game-Motor
 Un seul outil à connaître : le hook `useCatris`.
 
 ```tsx
-import { useTetris } from '@Cig4l/Catris-Game-Motor';
+import { useCatris } from '@Cig4l/Catris-Game-Motor';
 
 function Game() {
-  const { state, actions } = useTetris();
+  const { state, actions } = useCatris();
 
   // state   -> à AFFICHER
   // actions -> à APPELER sur les boutons
@@ -41,7 +41,7 @@ function Game() {
 
 ```tsx
 import { View, Text, Pressable } from 'react-native';
-import { useTetris } from '@equipe/tetris-engine';
+import { useCatris } from '@equipe/Catris-engine';
 
 function Game() {
   const { state, actions } = useCatris();
@@ -114,11 +114,6 @@ function Game() {
 ## 🚦 Important : le moteur est en cours de construction
 
 Vous pouvez **déjà commencer à brancher l'affichage**, les noms ne changeront plus.
-Mais certaines règles ne sont **pas encore codées** côté moteur :
+Mais les règles ne sont **pas encore codées** côté moteur.
 
-- les pièces ne se bloquent pas encore entre elles ;
-- les lignes pleines ne disparaissent pas encore ;
-- la rotation ne change pas encore la forme à l'écran.
-
-👉 Si vous voyez ça, **ce n'est pas un bug de votre côté** : c'est normal pour l'instant.
-Pour toute question, pinguez le responsable du moteur.
+👉 Si rien ne bouge, c'est normal pour l'instant.
