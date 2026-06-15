@@ -15,19 +15,16 @@ C'est tout. Pas besoin de comprendre l'intérieur du moteur.
 ## 🚀 Installation
 
 ```bash
-npm install github:equipe/tetris-engine
+npm install github:Cig4l/Catris-Game-Motor
 ```
-
-*(remplacez par le vrai lien du repo)*
-
 ---
 
 ## ⚡ Comment l'utiliser
 
-Un seul outil à connaître : le hook `useTetris`.
+Un seul outil à connaître : le hook `useCatris`.
 
 ```tsx
-import { useTetris } from '@equipe/tetris-engine';
+import { useTetris } from '@Cig4l/Catris-Game-Motor';
 
 function Game() {
   const { state, actions } = useTetris();
@@ -47,7 +44,7 @@ import { View, Text, Pressable } from 'react-native';
 import { useTetris } from '@equipe/tetris-engine';
 
 function Game() {
-  const { state, actions } = useTetris();
+  const { state, actions } = useCatris();
 
   return (
     <View>
