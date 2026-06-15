@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import { Grid } from './models/Grid';
+import { Grid } from './src/models/Grid';
 
 export default function App() {
   const grid = new Grid();
