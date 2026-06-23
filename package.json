@@ -1,27 +1,16 @@
 {
-  "name": "catris",
+  "name": "catris-engine",
   "version": "1.0.0",
-  "main": "index.ts",
-  "dependencies": {
-    "@expo/metro-runtime": "~56.0.14",
-    "expo": "~56.0.9",
-    "expo-dev-client": "^56.0.19",
-    "expo-linking": "~56.0.13",
-    "expo-status-bar": "~56.0.4",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "react-native": "0.85.3",
-    "react-native-web": "^0.21.2"
+  "main": "src/index.ts",
+  "react-native": "src/index.ts",
+  "types": "src/index.ts",
+  "files": ["src/**/*.ts"],
+  "peerDependencies": {
+    "react": "^19.2.3"
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
-    "typescript": "~6.0.3"
-  },
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
-  },
-  "private": true
+    "typescript": "~6.0.3",
+    "vitest": "^4.1.9"
+  }
 }

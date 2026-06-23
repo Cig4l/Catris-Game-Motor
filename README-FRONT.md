@@ -1,4 +1,4 @@
-# 🎮 Tetris Engine
+# 🎮 Catris Engine
 
 C'est le **cerveau du jeu** : il gère toutes les règles (déplacements, chute, lignes, score…).
 Il **n'affiche rien**. Votre travail côté front : **afficher** ce qu'il calcule et **brancher
@@ -15,22 +15,19 @@ C'est tout. Pas besoin de comprendre l'intérieur du moteur.
 ## 🚀 Installation
 
 ```bash
-npm install github:equipe/tetris-engine
+npm install github:Cig4l/Catris-Game-Motor
 ```
-
-*(remplacez par le vrai lien du repo)*
-
 ---
 
 ## ⚡ Comment l'utiliser
 
-Un seul outil à connaître : le hook `useTetris`.
+Un seul outil à connaître : le hook `useCatris`.
 
 ```tsx
-import { useTetris } from '@equipe/tetris-engine';
+import { useCatris } from '@Cig4l/Catris-Game-Motor';
 
 function Game() {
-  const { state, actions } = useTetris();
+  const { state, actions } = useCatris();
 
   // state   -> à AFFICHER
   // actions -> à APPELER sur les boutons
@@ -44,10 +41,10 @@ function Game() {
 
 ```tsx
 import { View, Text, Pressable } from 'react-native';
-import { useTetris } from '@equipe/tetris-engine';
+import { useCatris } from '@equipe/Catris-engine';
 
 function Game() {
-  const { state, actions } = useTetris();
+  const { state, actions } = useCatris();
 
   return (
     <View>
@@ -84,10 +81,8 @@ function Game() {
 |---|---|
 | `board` | La grille du jeu. Chaque case = une couleur de pièce, ou `null` si vide. |
 | `active` | La pièce qui tombe. `active.cells` = les cases à colorier. |
-| `ghost` | L'ombre qui montre où la pièce va atterrir. |
-| `hold` | La pièce mise de côté. |
 | `queue` | Les prochaines pièces (le « NEXT »). |
-| `status` | `idle` (accueil), `running` (en jeu), `paused`, `gameover`. |
+| `status` | `idle` (accueil), `running`, `paused`, `gameover`. |
 | `score` / `level` / `lines` | Pour afficher les compteurs. |
 
 ⚠️ On ne **modifie jamais** `state` à la main. On passe toujours par `actions`.
@@ -104,8 +99,7 @@ function Game() {
 | `moveLeft()` / `moveRight()` | Déplace la pièce à gauche / droite. |
 | `softDrop()` | Fait descendre la pièce un peu plus vite. |
 | `hardDrop()` | Fait tomber la pièce d'un coup, tout en bas. |
-| `rotateCW()` / `rotateCCW()` | Tourne la pièce (horaire / anti-horaire). |
-| `hold()` | Met la pièce de côté pour plus tard. |
+| `rotateCW()` | Tourne la pièce dans le sens horaire. |
 
 ---
 
@@ -120,11 +114,6 @@ function Game() {
 ## 🚦 Important : le moteur est en cours de construction
 
 Vous pouvez **déjà commencer à brancher l'affichage**, les noms ne changeront plus.
-Mais certaines règles ne sont **pas encore codées** côté moteur :
+Mais les règles ne sont **pas encore codées** côté moteur.
 
-- les pièces ne se bloquent pas encore entre elles ;
-- les lignes pleines ne disparaissent pas encore ;
-- la rotation ne change pas encore la forme à l'écran.
-
-👉 Si vous voyez ça, **ce n'est pas un bug de votre côté** : c'est normal pour l'instant.
-Pour toute question, pinguez le responsable du moteur.
+👉 Si rien ne bouge, c'est normal pour l'instant.
