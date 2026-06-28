@@ -9,7 +9,7 @@ L'idée tient en deux phrases :
 - Vous **appelez** `actions` quand le joueur appuie sur un bouton.
 
 C'est tout. Pas besoin de comprendre l'intérieur du moteur.
-
+/ delete?
 ---
 
 ## 🚀 Installation

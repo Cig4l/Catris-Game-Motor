@@ -1,5 +1,5 @@
 import { CatrisActions } from "./CatrisActions";
-import { GameConfig } from "./GameConfig";
+import { GameConfig } from "../models/GameConfig";
 import { GameState } from "./GameState";
 
 export interface UseCatrisResult {
