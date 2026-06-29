@@ -24,14 +24,8 @@ src/
 
 ---
 
-## 📦 Installation
-npm install
-
----
-
 ## ▶️ Lancement
-npm start
-npm run simulate
+npm run sim
 
 ---
 
