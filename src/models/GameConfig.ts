@@ -6,7 +6,7 @@ export interface GameConfig {
 }
 
 export const DEFAULT_CONFIG : GameConfig = {
-  columns: 20,
-  rows: 10,
+  columns: 10,
+  rows: 20,
   startLevel: 1
 }

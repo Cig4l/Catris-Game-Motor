@@ -14,8 +14,10 @@ import { createEmptyBoard, printPiecePositions } from "./board";
 import { canPlace } from "./collision";
 import { createPiece, move, rotateCW } from "./piece";
 
-function orchestrate(gameState: GameState, action: Action) {
+export function orchestrate(gameState: GameState, action: Action): GameState {
   switch (action) {
+    case Action.START:
+      return spawnNextActivePiece({ ...createNewState(), status: "running" });
     case Action.PAUSE:
       return gameState.status == "running"
         ? { ...gameState, status: "paused" }
@@ -53,7 +55,7 @@ function orchestrate(gameState: GameState, action: Action) {
         if (!canPlace(s.board, movedPiece.cells)) {
           break;
         }
-        s = {...s, active: movedPiece};
+        s = { ...s, active: movedPiece };
       }
       return resolvePiece(s);
     }
@@ -62,8 +64,16 @@ function orchestrate(gameState: GameState, action: Action) {
   }
 }
 
-function createNewState() {
-    return {board: createEmptyBoard(DEFAULT_CONFIG.rows!, DEFAULT_CONFIG.columns!)};
+export function createNewState(): GameState {
+  return {
+    board: createEmptyBoard(DEFAULT_CONFIG.rows!, DEFAULT_CONFIG.columns!),
+    active: null,
+    queue: refillQueue(),
+    status: "idle",
+    score: 0,
+    level: DEFAULT_CONFIG.startLevel!,
+    lines: 0,
+  };
 }
 
 function gravityTick(gameState: GameState): GameState {
@@ -93,7 +103,7 @@ function resolvePiece(gameState: GameState): GameState {
 
   const clearedRes: ClearResult = clearLines(newBoard);
   const lines: number = gameState.lines + clearedRes.cleared;
-  const level: number = levelForLines(lines, 0);
+  const level: number = levelForLines(lines, DEFAULT_CONFIG.startLevel!);
   const score =
     gameState.score + scoreForLines(clearedRes.cleared, gameState.level);
 
@@ -108,10 +118,17 @@ function resolvePiece(gameState: GameState): GameState {
 }
 
 function spawnNextActivePiece(gameState: GameState): GameState {
-  const newPiece = createPiece(gameState.queue[0], {
-    col: GRID_WIDTH + 1 / 2,
+  const queue: ReadonlyArray<PieceType> = gameState.queue.length > 0 ? gameState.queue : refillQueue();
+
+  let newPiece = createPiece(queue[0], {
+    col: Math.floor((GRID_WIDTH + 1) / 2),
     row: 0,
   });
+
+  const minRow = Math.min(...newPiece.cells.map((c) => c.row));
+  if (minRow < 0) {
+    newPiece = move(newPiece, 0, -minRow);
+  }
 
   if (!canPlace(gameState.board, newPiece.cells)) {
     return { ...gameState, active: null, status: "gameover" };
@@ -121,9 +138,7 @@ function spawnNextActivePiece(gameState: GameState): GameState {
     return {
       ...gameState,
       active: newPiece,
-      queue: gameState.queue.filter((v) => {
-        v != gameState.queue[0];
-      }),
+      queue: queue.slice(1),
     };
   }
   return {

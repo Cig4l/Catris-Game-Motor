@@ -14,22 +14,22 @@ export function printPiecePositions(
   const nextBoard: Cell[][] = board.map((row) => row.slice());
 
   for (const position of positions) {
-    nextBoard[position.col][position.row] = value;
+    nextBoard[position.row][position.col] = value;
   }
 
   return nextBoard as Board;
 }
 
 export function isEmpty(position: Position, board: Board): boolean {
-  return board[position.col][position.row] == null;
+  return board[position.row][position.col] == null;
 }
 
 export function isInsideBoard(position: Position, board: Board): boolean {
   return (
-    position.col >= 0 &&
-    position.col < board.length &&
     position.row >= 0 &&
-    position.row < board[0].length
+    position.row < board.length &&
+    position.col >= 0 &&
+    position.col < board[0].length
   );
 }
 

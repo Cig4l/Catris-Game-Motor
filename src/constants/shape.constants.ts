@@ -1,6 +1,5 @@
 import { Position } from "../models/Position";
 import { PieceType } from "./piece-types.constants";
-import { POSITION_TYPES, PositionType } from "./position.constants";
 
 export const PIECE_DEFAULT_POSITIONS: Record<PieceType, ReadonlyArray<Position>> = {
   J: [

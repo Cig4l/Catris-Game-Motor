@@ -61,7 +61,7 @@ export function rotateCW(piece: ActivePiece): ActivePiece {
     return piece;
   }
 
-  let rotation: Rotation = (piece.rotation + (1 % 4)) as Rotation;
+  let rotation: Rotation = ((piece.rotation + 1) % 4) as Rotation;
 
   let cells: ReadonlyArray<Position> = calculatePositions(
     piece.type,
