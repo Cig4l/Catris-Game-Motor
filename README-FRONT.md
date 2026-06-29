@@ -9,7 +9,7 @@ L'idée tient en deux phrases :
 - Vous **appelez** `actions` quand le joueur appuie sur un bouton.
 
 C'est tout. Pas besoin de comprendre l'intérieur du moteur.
-/ delete?
+
 ---
 
 ## 🚀 Installation
@@ -95,9 +95,9 @@ function Game() {
 |---|---|
 | `start()` | Lance une partie. |
 | `pause()` / `resume()` | Met en pause / reprend. |
-| `reset()` | Retour à l'accueil. |
+| `reset()` | Retour à l'accueil. (non fonctionnel pour le moment) |
 | `moveLeft()` / `moveRight()` | Déplace la pièce à gauche / droite. |
-| `softDrop()` | Fait descendre la pièce un peu plus vite. |
+| `tick()` | Fait avancer le temps logique du moteur. |
 | `hardDrop()` | Fait tomber la pièce d'un coup, tout en bas. |
 | `rotateCW()` | Tourne la pièce dans le sens horaire. |
 
@@ -110,10 +110,3 @@ function Game() {
   C'est aussi vous qui décidez quel geste appelle quelle action (ex. *glisser à gauche* → `moveLeft()`).
 
 ---
-
-## 🚦 Important : le moteur est en cours de construction
-
-Vous pouvez **déjà commencer à brancher l'affichage**, les noms ne changeront plus.
-Mais les règles ne sont **pas encore codées** côté moteur.
-
-👉 Si rien ne bouge, c'est normal pour l'instant.
