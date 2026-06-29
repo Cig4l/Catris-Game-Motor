@@ -1,11 +1,44 @@
-import { createCatris } from "../services/engine";
+import { CatrisEngine, createCatris } from "../services/engine";
 import { render } from "./render";
 import { gravityDelay } from "../services/scoring";
+
+const isAuto : boolean = false;
+
+function setupInput(engine: CatrisEngine, onQuit: () => void): void {
+  const stdin = process.stdin;
+  stdin.setRawMode(true); // chaque touche arrive tout de suite
+  stdin.resume();
+  stdin.setEncoding('utf8');
+
+  stdin.on('data', (key: string) => {
+    switch (key) {
+      case '\u001b[D': engine.actions.moveLeft();  break; // flèche gauche
+      case '\u001b[C': engine.actions.moveRight(); break; // flèche droite
+      case '\u001b[A': engine.actions.rotateCW();  break; // flèche haut
+      case '\u001b[B': engine.actions.tick();      break; // flèche bas (soft drop)
+      case ' ':        engine.actions.hardDrop();  break; // espace
+      case 'p':        engine.actions.pause();     break;
+      case 'r':        engine.actions.resume();    break;
+      case '\u0003':   // Ctrl-C
+      case 'q':        onQuit(); break;
+    }
+  });
+}
+
+function cleanup(loop: NodeJS.Timeout): void {
+  clearInterval(loop);
+  process.stdin.setRawMode(false);
+  process.stdin.pause();
+  process.stdout.write('\n');
+  process.exit(0);
+}
 
 
 function main(): void {
   const engine = createCatris();
+
   const moves = ['moveLeft', 'moveRight', 'rotateCW', 'hardDrop'] as const;
+  if(!isAuto) setupInput(engine, () => cleanup);
 
   engine.actions.start();
 
@@ -27,9 +60,11 @@ function main(): void {
       return;
     }
     
-    if (Math.random() < 0.1) {
-      const m = moves[Math.floor(Math.random() * moves.length)];
-      engine.actions[m]();
+    if(isAuto){
+      if (Math.random() < 0.1) {
+        const m = moves[Math.floor(Math.random() * moves.length)];
+        engine.actions[m]();
+      }
     }
     
     
@@ -42,3 +77,4 @@ function main(): void {
 }
 
 main();
+
