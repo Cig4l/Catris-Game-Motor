@@ -6,10 +6,65 @@ import {
 } from "../constants/piece-types.constants";
 import { GameState } from "../interfaces/GameState";
 import { ActivePiece } from "../models/ActivePiece";
+import { DEFAULT_CONFIG } from "../models/GameConfig";
+import { levelForLines, scoreForLines } from "../services/scoring";
+import { Action } from "../types/actions.enum";
 import { Board } from "../types/types";
-import { printPiecePositions } from "./board";
+import { createEmptyBoard, printPiecePositions } from "./board";
 import { canPlace } from "./collision";
-import { calculatePositions, createPiece, move } from "./piece";
+import { createPiece, move, rotateCW } from "./piece";
+
+function orchestrate(gameState: GameState, action: Action) {
+  switch (action) {
+    case Action.PAUSE:
+      return gameState.status == "running"
+        ? { ...gameState, status: "paused" }
+        : gameState;
+    case Action.RESUME:
+      return gameState.status == "paused"
+        ? { ...gameState, status: "running" }
+        : gameState;
+    /*         case Action.RESET: return gameState.status == 'paused' ? {...gameState, status:'running'} : gameState;  // TODO reset
+     */
+  }
+
+  if (gameState.status != "running" || gameState.active == null) {
+    return gameState;
+  }
+
+  switch (action) {
+    case Action.MOVE_LEFT:
+      return tryMove(gameState, -1, 0);
+    case Action.MOVE_RIGHT:
+      return tryMove(gameState, +1, 0);
+    case Action.TICK:
+      return gravityTick(gameState);
+    case Action.ROTATE_CW: {
+      const rotatedPiece = rotateCW(gameState.active);
+      if (canPlace(gameState.board, rotatedPiece.cells)) {
+        return { ...gameState, active: rotatedPiece };
+      }
+      return gameState;
+    }
+    case Action.HARD_DROP: {
+      let s = gameState;
+      while (true) {
+        const movedPiece = move(s.active!, 0, 1);
+        if (!canPlace(s.board, movedPiece.cells)) {
+          break;
+        }
+        s = {...s, active: movedPiece};
+      }
+      return resolvePiece(s);
+    }
+    default:
+      return gameState;
+  }
+}
+
+function createNewState() {
+    return {board: createEmptyBoard(DEFAULT_CONFIG.rows!, DEFAULT_CONFIG.columns!)};
+}
 
 function gravityTick(gameState: GameState): GameState {
   if (!gameState.active) {
@@ -36,14 +91,19 @@ function resolvePiece(gameState: GameState): GameState {
     gameState.active.type,
   );
 
-  const clearedRes : ClearResult = clearLines(newBoard);
-  const lines : number = gameState.lines + clearedRes.cleared;
+  const clearedRes: ClearResult = clearLines(newBoard);
+  const lines: number = gameState.lines + clearedRes.cleared;
+  const level: number = levelForLines(lines, 0);
+  const score =
+    gameState.score + scoreForLines(clearedRes.cleared, gameState.level);
 
-  return spawnNextActivePiece({ // TODO : score + level
+  return spawnNextActivePiece({
     ...gameState,
     board: clearedRes.board,
     active: null,
-    lines: lines
+    lines: lines,
+    level: level,
+    score: score,
   });
 }
 
@@ -88,7 +148,7 @@ export interface ClearResult {
   cleared: number;
 }
 
-function clearLines(board: Board): clearResult {
+function clearLines(board: Board): ClearResult {
   const clearedBoard = board.filter((row) => row.some((cell) => cell == null));
   const clearedCount = board.length - clearedBoard.length;
   const emptyLines: Cell[][] = [];
@@ -98,4 +158,17 @@ function clearLines(board: Board): clearResult {
   }
 
   return { board: [...emptyLines, ...clearedBoard], cleared: clearedCount };
+}
+
+function tryMove(gameState: GameState, moveX: number, moveY: number) {
+  if (!gameState.active) {
+    return gameState;
+  }
+
+  const movedPiece: ActivePiece = move(gameState.active, moveX, moveY);
+
+  if (canPlace(gameState.board, movedPiece.cells)) {
+    return { ...gameState, active: movedPiece } as GameState;
+  }
+  return gameState;
 }

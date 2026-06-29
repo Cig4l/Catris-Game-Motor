@@ -1,11 +1,12 @@
 export interface CatrisActions {
-  start(): void;  // delete?
-  pause(): void;  // delete?
-  resume(): void; // delete?
+  start(): void;  
+  pause(): void;  
+  resume(): void; 
   reset(): void;
   moveLeft(): void;
   moveRight(): void;
-  softDrop(): void;
+  Drop(): void;
   hardDrop(): void;
   rotateCW(): void;
+  tick(): void
 }

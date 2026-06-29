@@ -4,3 +4,9 @@ export interface GameConfig {
   readonly startLevel?: number;  
   readonly previewCount?: number; 
 }
+
+export const DEFAULT_CONFIG : GameConfig = {
+  columns: 20,
+  rows: 10,
+  startLevel: 1
+}
