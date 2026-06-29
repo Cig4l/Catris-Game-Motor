@@ -1,4 +1,3 @@
-import { GRID_WIDTH } from "../constants/grid.constants";
 import {
   Cell,
   PIECE_TYPES,
@@ -121,7 +120,7 @@ function spawnNextActivePiece(gameState: GameState): GameState {
   const queue: ReadonlyArray<PieceType> = gameState.queue.length > 0 ? gameState.queue : refillQueue();
 
   let newPiece = createPiece(queue[0], {
-    col: Math.floor((GRID_WIDTH + 1) / 2),
+    col: Math.floor((DEFAULT_CONFIG.columns! + 1) / 2),
     row: 0,
   });
 

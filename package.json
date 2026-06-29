@@ -1,19 +1,9 @@
 {
   "name": "catris-engine",
-  "version": "1.0.0",
-  "main": "src/index.ts",
-  "react-native": "src/index.ts",
-  "types": "src/index.ts",
-  "files": [
-    "src/**/*.ts"
-  ],
-  "peerDependencies": {
-    "react": "^19.2.3"
-  },
-  "devDependencies": {
-    "@types/node": "^26.0.1",
-    "@types/react": "~19.2.2",
-    "typescript": "~6.0.3",
-    "vitest": "^4.1.9"
+  "version": "0.1.0",
+  "description": "Moteur de Tetris pur en TypeScript",
+  "scripts": {
+    "build": "tsc",
+    "sim": "ts-node src/simulation/main.ts"
   }
 }
