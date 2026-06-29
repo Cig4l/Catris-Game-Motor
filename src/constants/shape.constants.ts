@@ -1,6 +1,10 @@
 import { Position } from "../models/Position";
 import { PieceType } from "./piece-types.constants";
 
+/**
+ * Offset related to the pivot of all cells of an ActivePiece. 
+ * Letter = shape of the piece.
+ */
 export const PIECE_DEFAULT_POSITIONS: Record<PieceType, ReadonlyArray<Position>> = {
   J: [
     { col: -1, row: -1 },
