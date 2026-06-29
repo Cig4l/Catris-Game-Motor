@@ -3,7 +3,7 @@ import { Board, GameStatus } from "../types/types";
 import { ActivePiece } from "../models/ActivePiece";
 
 export interface GameState {
-  readonly board: Board;
+  readonly board: Board;  // only contains inactive pieces / cells
   readonly active: ActivePiece | null;
   readonly queue: ReadonlyArray<PieceType>;  
   readonly status: GameStatus;

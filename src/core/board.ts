@@ -6,7 +6,7 @@ export function createEmptyBoard(height: number, width: number): Board {
   return Array.from({ length: height }, () => Array(width).fill(null)) as Board;
 }
 
-export function updateActivePiecePosition(
+export function printPiecePositions(
   board: Board,
   positions: ReadonlyArray<Position>,
   value: Cell,
