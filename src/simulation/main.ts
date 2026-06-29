@@ -6,20 +6,20 @@ const isAuto : boolean = false;
 
 function setupInput(engine: CatrisEngine, onQuit: () => void): void {
   const stdin = process.stdin;
-  stdin.setRawMode(true); // chaque touche arrive tout de suite
+  stdin.setRawMode(true); // every input is consumed immediately 
   stdin.resume();
   stdin.setEncoding('utf8');
 
   stdin.on('data', (key: string) => {
     switch (key) {
-      case '\u001b[D': engine.actions.moveLeft();  break; // flèche gauche
-      case '\u001b[C': engine.actions.moveRight(); break; // flèche droite
-      case '\u001b[A': engine.actions.rotateCW();  break; // flèche haut
-      case '\u001b[B': engine.actions.tick();      break; // flèche bas (soft drop)
-      case ' ':        engine.actions.hardDrop();  break; // espace
+      case '\u001b[D': engine.actions.moveLeft();  break; // arrow left
+      case '\u001b[C': engine.actions.moveRight(); break; // arrow right
+      case '\u001b[A': engine.actions.rotateCW();  break; // arrow top
+      case '\u001b[B': engine.actions.tick();      break; // arrow bottom (soft drop)
+      case ' ':        engine.actions.hardDrop();  break; // space 
       case 'p':        engine.actions.pause();     break;
       case 'r':        engine.actions.resume();    break;
-      case '\u0003':   // Ctrl-C
+      case '\u0003':   onQuit(); break;                   // Ctrl-C
       case 'q':        onQuit(); break;
     }
   });

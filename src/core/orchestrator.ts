@@ -13,6 +13,13 @@ import { createEmptyBoard, printPiecePositions } from "./board";
 import { canPlace } from "./collision";
 import { createPiece, move, rotateCW } from "./piece";
 
+/**
+ * Links everything together
+ * Route to the right functions depending on current gameState and requested actions
+ * @param gameState - state of the game
+ * @param action - exposed callable action from engine API
+ * @returns GameState
+ */
 export function orchestrate(gameState: GameState, action: Action): GameState {
   switch (action) {
     case Action.START:
@@ -63,6 +70,11 @@ export function orchestrate(gameState: GameState, action: Action): GameState {
   }
 }
 
+/**
+ * Creates a new GameState
+ * 
+ * @returns a GameState
+ */
 export function createNewState(): GameState {
   return {
     board: createEmptyBoard(DEFAULT_CONFIG.rows!, DEFAULT_CONFIG.columns!),
@@ -75,6 +87,12 @@ export function createNewState(): GameState {
   };
 }
 
+/**
+ * Applies gravity on an existing ActivePiece of GameState if the cell where ActivePiece is supposed to fall is empty
+ * 
+ * @param gameState - current state of the game
+ * @returns GameState with updated values
+ */
 function gravityTick(gameState: GameState): GameState {
   if (!gameState.active) {
     return gameState;
@@ -89,6 +107,11 @@ function gravityTick(gameState: GameState): GameState {
   return resolvePiece(gameState) as GameState;
 }
 
+/**
+ * Prints piece position (not active anymore), checks if board has cleared lines, calculates score, and spawn next ActivePiece 
+ * @param gameState - state of the game
+ * @returns GameState
+ */
 function resolvePiece(gameState: GameState): GameState {
   if (!gameState.active) {
     return gameState;
@@ -116,6 +139,15 @@ function resolvePiece(gameState: GameState): GameState {
   });
 }
 
+/**
+ * In charge of spawning the next ActivePiece. 
+ * The PieceType on index 0 of gameState.queue determines the type of the next ActivePiece. 
+ * If the queue is empty, it will have to be refilled first.
+ * If the next ActivePiece cannot be placed on board, the game status becomes "gameover"
+ * 
+ * @param gameState - current state of the game
+ * @returns GameState gameState with updated active and queue attributes
+ */
 function spawnNextActivePiece(gameState: GameState): GameState {
   const queue: ReadonlyArray<PieceType> = gameState.queue.length > 0 ? gameState.queue : refillQueue();
 
@@ -147,6 +179,10 @@ function spawnNextActivePiece(gameState: GameState): GameState {
   };
 }
 
+/**
+ * Creates an array containing all piece types, with no duplicate
+ * @returns ReadonlyArray<PieceType>
+ */
 function refillQueue(): ReadonlyArray<PieceType> {
   const pieceTypeArr = [];
   for (const pieceType of PIECE_TYPES) {
@@ -162,6 +198,12 @@ export interface ClearResult {
   cleared: number;
 }
 
+/**
+ * Clears any line with no empty cell, adds as much empty lines on top as the number of cleared lines, and keeps count of the cleared lines.
+ * 
+ * @param board - a grid of empty/PieceType Cells
+ * @returns ClearResult - an updated board and the count of cleared lines
+ */
 function clearLines(board: Board): ClearResult {
   const clearedBoard = board.filter((row) => row.some((cell) => cell == null));
   const clearedCount = board.length - clearedBoard.length;
@@ -174,7 +216,15 @@ function clearLines(board: Board): ClearResult {
   return { board: [...emptyLines, ...clearedBoard], cleared: clearedCount };
 }
 
-function tryMove(gameState: GameState, moveX: number, moveY: number) {
+/**
+ * Tries to move an existing ActivePiece of GameState on the board 
+ * 
+ * @param gameState - 
+ * @param moveX - Translation offset on the horizontal axis
+ * @param moveY - Translation offset on the vertical axis
+ * @returns GameState - updated with moved ActivePiece only if GameState has an ActivePiece and the move is possible (only empty cells)
+ */
+function tryMove(gameState: GameState, moveX: number, moveY: number) : GameState {
   if (!gameState.active) {
     return gameState;
   }

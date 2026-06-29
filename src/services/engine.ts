@@ -2,7 +2,9 @@ import { createNewState, orchestrate } from "../core/orchestrator";
 import { GameState } from "../interfaces/GameState";
 import { Action } from "../types/actions.enum";
 
-
+/**
+ * List of exposed endpoints
+ */
 export interface CatrisActions {
   start(): void;
   pause(): void;
@@ -15,17 +17,24 @@ export interface CatrisActions {
   tick(): void;
 }
 
+/**
+ * Interaction bridges used to manipulate the game
+ */
 export interface CatrisEngine {
   getState(): GameState;
   subscribe(listener: (state: GameState) => void): () => void;
   readonly actions: CatrisActions;
 }
 
-
+/**
+ * Builds the Catris Game Engine with the signals relay (observer pattern) with subscribe/dispatch. 
+ * Initializes GameState and exposes interaction bridges to manipulate the game 
+ * 
+ * @returns CatrisEngine - interaction bridges : getState, subscribe, actions
+ */
 export function createCatris(): CatrisEngine {
-
   let state = createNewState();
-  const listeners = new Set<(s: GameState) => void>();
+  const listeners = new Set<(s: GameState) => void>();  // créer set de fonctions (pas de doublon) : (s : GameState) => void
 
   function dispatch(action: Action): void {
     const next = orchestrate(state, action);
